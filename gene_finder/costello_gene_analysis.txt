@@ -1,0 +1,19 @@
+"""Gene Analysis"""
+
+Created on Sun Feb  8 9:26:42 2014
+
+@author: Michael Costello
+______________________________________________________________________________
+
+Top 5 longest ORFs:
+
+1. type III secretion system protein SpaS [Salmonella enterica]
+Required for surface presentation of invasion plasmid antigens; required for invasion and for secretion of the three ipa proteins
+2. antigen presentation protein SpaN
+involved in the surface presentation of antigens needed for the invasion of Salmonella into host cells
+3. surface presentation of antigens protein SpaO
+associated with type III secretion and virulence
+4. ATP synthase
+invasion protein InvC; necessary for efficient entry of S.typhimurium into cultured epithelial cells; probable catalytic subunit of a protein translocase
+5. surface presentation of antigens protein SpaR
+similar to 3
