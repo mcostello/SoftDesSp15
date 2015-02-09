@@ -44,6 +44,7 @@ def get_reverse_complement(dna):
     'TGAACGCGG'
     """
     n = len(dna)
+    i = 0
     reverse_dna = []
 
     for i in range(n):
@@ -202,13 +203,13 @@ def gene_finder(dna):
     threshold = longest_ORF_noncoding(dna, 1500)
     print threshold
     top_ORFs = []
-    List_ORFs = find_all_ORFs_both_strands(dna)
+    L = find_all_ORFs_both_strands(dna)
     i = -1
 
-    List_ORFs = sorted(L, key=len)
+    L = sorted(L, key=len)
     
-    while len(List_ORFs[i]) > threshold:
-        top_ORFs.append(coding_strand_to_AA(List_ORFs[i]))
+    while len(L[i]) > threshold:
+        top_ORFs.append(coding_strand_to_AA(L[i]))
         i -= 1
     return top_ORFs
 
