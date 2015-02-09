@@ -31,8 +31,6 @@ def get_complement(nucleotide):
     nucDict={'A':'T','G':'C','T':'A','C':'G'}
     return(nucDict[nucleotide])
 
-# nucleotide = raw_input('nucleotide:  ')
-# print get_complement(nucleotide)
 
 def get_reverse_complement(dna):
     """ Computes the reverse complementary sequence of DNA for the specified DNA
@@ -203,18 +201,16 @@ def gene_finder(dna):
         returns: a list of all amino acid sequences coded by the sequence dna.
     """
     threshold = longest_ORF_noncoding(dna, 1500)
-    n = 6
-    L = n_longest_ORFs(dna,n)
-    top_ORFs = []
-
     print threshold
-    print len(L[5])
+    top_ORFs = []
+    L = find_all_ORFs_both_strands(dna)
+    i = -1
 
-    for i in range(n):
-        if len(L[i]) > threshold:
-            top_ORFs.append(coding_strand_to_AA(L[i]))
-        else:
-            top_ORFs.append('')
+    L = sorted(L, key=len)
+    
+    while len(L[i]) > threshold:
+        top_ORFs.append(coding_strand_to_AA(L[i]))
+        i -= 1
     return top_ORFs
 
 
