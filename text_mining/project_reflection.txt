@@ -1,0 +1,56 @@
+Michael Costello
+Mini-Project 3
+
+Project Overview
+
+This project uses wikipedia article text to analyze the level of simularity between two given cities. I used BeautifulSoup to convert the city articles' HTML into text documents, and used these to compare word choice. I wanted to learn how wikipedia characterizes each city, and learn which cities are described similarly.
+
+
+Implementation
+
+The code takes the names of each city as a raw input and finds the wikipedia article corresponding to that name. This is somewhat finnickey, as the city name must exactly correspond to its article ("New_York," for example, will give the state rather than the city. "New York," with a space, yields a directory page). Each article is then converted to a text file,and a list is generated containing every unique word. Then, these lists are compared, and any word which appears in both articles is counted. The result of this count is divided by the average of the article's unique word counts, and a ratio is obtained representing the amount of words the articles share.
+
+In designing this code, I had to decide how to reliably obtain the required text. I considered using the CIA Factbook, but found it difficult to search and had a limited scope of places to choose. Wikipedia proved to be the clearest choice.
+
+
+Results
+
+Dispite the finnickey nature of the raw input, the ambiguity of counting "unique words," and the quantity of "unique words" which turn out to be jumbled characters, this code's output is actually fairly close to one's expectations. For example, compare...
+
+	Two mid-sized northeast US state capitals?
+		$ python text_mining.py
+			>>>First city: Albany
+			>>>Second city: Providence
+			ratio is  0.57729468599
+			These cities are fairly similar
+
+	Or two major (sometimes oppositional) Chinese cities?
+		$ python text_mining.py
+			>>>First city: Beijing
+			>>>Second city: Hong_Kong
+			ratio is  0.447123937537
+			These cities are somewhat similar
+
+	Or, home and far away from home?
+	$ python text_mining.py
+		>>>First city: Needham,_MA
+		>>>Second city: Timbouktou
+		ratio is  0.204858593183
+		These cities are not very similar
+
+Of course, this program has no way to determine if an input is actually a city, allowing for some interesting comparisons:
+
+$ python text_mining.py
+	>>>First city: Barack Obama
+	>>>Second city: Hilary Clinton
+	ratio is  0.409185469675
+	These cities are somewhat similar
+
+If I had more time, I would require that the inputs be real cities and towns (perhaps by having a lookup table derived from a Wikipedia page); as it stands, this is just a standard comparing program. 
+
+If I had more time AND creativity, I would create a graphic to represent the data I want to study. Perhaps I could display the relative distances between multiple (3+) cities, and further hone my algorithm to sort cities categorically (i.e., lots of terms related to industrial development, lots of terms related to religion, etc) to actually draw a map of globalization.
+
+
+Reflection
+
+This project took longer than expected, and I didn't seek out help early enough. Originally, I wanted to use Wikipedia's API, and spent several non-consecutive hours trying to download an article section-by-section. This proved fruitless, so I eventually decided to simply download the HTML, and spent several more hours learning how to process it. The NINJAs, especially Heather and Sophie, were exceptionally helpful, and in the future I will reach out for help at an earlier stage.
