@@ -1,0 +1,2 @@
+README
+After downloading, execute this file from the command line using python plane_attack.py. Use the w,a,s,d keys to move up, left, down, and right. Use the space key to shoot. Use the k key to automatically spawn more enemies. To end the game, press ctrl+c.
