@@ -57,14 +57,14 @@ class Background(pygame.sprite.Sprite):
         self.pos_x = pos_x
         self.height = 480
 
+    def update(self):
+        """ update the background to move at a constant rate"""
+        self.pos_x -=1
+
     def get_drawables(self):
         """ Gets the drawables for the background """
         return DrawableSurface(self.image,
                                 pygame.Rect((self.pos_x, self.height - 128), self.image.get_size()))
-
-    def update(self):
-        """ update the background to move at a constant rate"""
-        self.pos_x -=1
 
     def collided_with(self, entity):
         """ Returns True if the input drawable surface (entity) has
@@ -109,23 +109,25 @@ class Enemy(pygame.sprite.Sprite):
         self.pos_x = pos_x
         self.pos_y = pos_y
 
-    def collided_with(self, entity):
-        """ Returns True if the input drawable surface (entity) has
-            collided with the ground """
-        d_rect = self.get_drawables().get_rect()
-        return entity.colliderect(d_rect)
-
     def update(self):
         """ move the enemy plane across the screen """
         pygame.event.pump()
         self.pos_x -= 1.5        
 
     def get_drawables(self):
+        """ gets the drawables for each enemy in the list """
         w,h = self.image.get_size()
         return DrawableSurface(self.image, 
                                 pygame.Rect(self.pos_x, self.pos_y, w, h))
 
+    def collided_with(self, entity):
+        """ Returns True if the input drawable surface (entity) has
+            collided with the ground """
+        d_rect = self.get_drawables().get_rect()
+        return entity.colliderect(d_rect)
+
     def is_dead(self, bullet_list):
+        """ checks for collisions between enemies and bullets """
         enemy_rect = self.get_drawables().get_rect()
         bullet_rects = [bullet.get_drawables().get_rect() for bullet in bullet_list]
         for bullet in bullet_rects:
@@ -168,20 +170,22 @@ class ScrollerModel():
         return [background.get_drawables() for background in self.background]
 
     def is_player_dead(self):
-        """ Return True if the player is dead (for instance) the player
-            has collided with an obstacle, and false otherwise """
+        """ Return True if the player is dead (having collided with an enemy)
+        and false otherwise """
         player_rect = self.plane.get_drawables()[0].get_rect()
         for enemy in self.enemies:
             if enemy.collided_with(player_rect):
                 return True
 
     def is_bullet_dead(self):
-        """ Return True if the player is dead (for instance) the players
-            has collided with an obstacle, and false otherwise """
+        """ Return True if the bullet is dead (having collided with a wall
+            or plane) and false otherwise """
         bullet_rect = self.bullets.get_drawables()[0].get_rect()
         return self.enemies.collided_with(bullet_rect)
 
     def is_enemy_dead(self):
+        """ Return True if an enemy in list self.enemies is dead
+            (having collided with a bullet) and false otherwise """
         enemy_rect = self.enemy.get_drawables()[0]
         return self.enemy.collided_with(player_rect)
 
@@ -190,7 +194,7 @@ class ScrollerModel():
         self.plane.update()
 
     def enemy_update(self, events):
-        """ Updates the enemy and checks for death"""
+        """ Updates and checks for death for each enemy in self.enemies """
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_k:
