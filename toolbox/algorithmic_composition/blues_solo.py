@@ -1,8 +1,9 @@
-""" Synthesizes a blues solo algorithmically """
+""" Synthesizes a blues solo algorithmically. Call with cvlc slow_blues.wav """
 
 from Nsound import *
 import numpy as np
 from random import choice
+import random
 
 def add_note(out, instr, key_num, duration, bpm, volume):
     """ Adds a note from the given instrument to the specified stream
@@ -29,8 +30,43 @@ solo = AudioStream(sampling_rate, 1)
 """ these are the piano key numbers for a 3 octave blues scale in A
 	See: http://en.wikipedia.org/wiki/Blues_scale """
 blues_scale = [25, 28, 30, 31, 32, 35, 37, 40, 42, 43, 44, 47, 49, 52, 54, 55, 56, 59, 61]
+pentatonic_scale = [25, 28, 30, 32, 35, 37, 40, 42, 44, 47, 49, 52, 54, 56, 59, 61]
 beats_per_minute = 45				# Let's make a slow blues solo
 
-add_note(solo, bass, blues_scale[0], 1.0, beats_per_minute, 1.0)
+curr_note = 18
+# add_note(solo, bass, blues_scale[curr_note], 1.5, beats_per_minute, 1.0)
+
+licks = [
+[ [0, .33*4], [-1, 0.33*.5], [-1, 0.33*.5], [-1, 0.33], [-1, 0.33], [1, 0.33*2],[-1, 0.33*.5], [-1, 0.33*.5],[0, 0.33*12] ],
+[ [2, 0.5*0.33], [-1, 0.33*0.5], [-1, 0.33 * 1], [-2, 0.5*0.33], [-1, 0.5*0.33], [1, .33*8] ],
+[ [-1, 0.33*.9], [ 1, 0.33*1.1], [-1, 0.33 *.9] ],
+[ [-1, .33*1.1], [ 0, 0.33 * 3] ],
+[ [ 1, .33*.5], [-1, 0.33*.5], [ 1, 0.33*.5], [-1, 0.33*.5] ],
+[ [ 1, .33*.5], [-1, 0.33*.5], [ 1, 0.33*.5], [-1, 0.33*.5] ],
+[ [-1, 1.0*.66] ]
+]
+
+for i in range(4):
+    for i in range(len(licks)):
+        # lick = random.choice(licks)
+        lick = licks[i]
+        for note in lick:
+            curr_note += note[0]
+            if curr_note > 18 or curr_note < -18:
+                curr_note = 0
+            add_note(solo, bass, blues_scale[curr_note], note[1], beats_per_minute, 1.0)
 
 solo >> "blues_solo.wav"
+
+backing_track = AudioStream(sampling_rate, 1)
+Wavefile.read('backing.wav', backing_track)
+
+m = Mixer()
+
+solo *= 0.6             # adjust relative volumes to taste
+backing_track *= 2.0
+
+m.add(2.25, 0, solo)    # delay the solo to match up with backing track   
+m.add(0, 0, backing_track)
+
+m.getStream(500.0) >> "slow_blues.wav"
