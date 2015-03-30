@@ -1,0 +1,6 @@
+Machine Learning Questions
+
+1. On the curve of % used data vs. accuracy, the accuracy of each model increases as the percent data used in training the model is increased.
+2. Generally, the noisiest part of the curve is the area between 10% and 40%; this section has limited guarantees of success, where the algorithm knows just enough data to make a bad guess.
+3. Around 20-30 trials are necessary for a nice, consistently smooth curve.
+4. By increasing the rate of logistic regression (making C larger, i.e., C=10**-1) the program works more slowly but becomes vastly more accurate. Alternately, as C gets smaller, it becomes less effective.
